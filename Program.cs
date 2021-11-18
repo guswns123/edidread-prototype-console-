@@ -8,6 +8,11 @@ using System.Text.RegularExpressions;
 
 namespace mission1
 {
+    static class Constants
+    {
+        
+        public const int m = 36;
+    }
     class Program
     {
         static public void Header(string[] imformation2 , int[] imformation10 , char[] imformation16 ) // 0~~~~19 byte data 처리
@@ -20,7 +25,7 @@ namespace mission1
             string[] temporaryname = new string[3];
 
             string name = (imformation2[16] + imformation2[17] + imformation2[18] + imformation2[19]).Remove(0,1);
-
+            
             for (int i = 0; name.Length > 0; i++)
             {
                 temporaryname[i] = name.Substring(0, 5);
@@ -43,13 +48,13 @@ namespace mission1
             else
                 version = "unKnown";
             //////////표기
-            /*
+            
             Console.WriteLine($"Header Information");
             Console.WriteLine($"제조사 : {realname}");
             Console.WriteLine($"제품명 :  {productname}");
             Console.WriteLine($"일렬번호 : {Serialnumber}");
             Console.WriteLine($"제조 날짜 : {date}");
-            Console.WriteLine($"{version}");*/
+            Console.WriteLine($"{version}\n");
             //////////
         }
 
@@ -164,7 +169,7 @@ namespace mission1
             M_H_imagesize = (imformation10[42] * 10 + imformation10[43]).ToString();
             M_V_imagesize = (imformation10[44] * 10 + imformation10[45]).ToString();
 
-            gamma = ( ( imformation10[46] * 16 + imformation10[47] + 100 ) / 100 ).ToString();
+            gamma = ( (float)( imformation10[46] * 16 + imformation10[47] + 100 ) / 100 ).ToString();
 
             if (imformation2[48].Substring(3, 1) == "1")
                 DPMS = "DPMS standby supported";
@@ -182,10 +187,9 @@ namespace mission1
                 else
                     Display_parameters[i - 1] = "no";
             }
-    
 
             ///////////////////////////////////
-            /*
+            
              if(input_type == "Digital input")
              {
                  Console.WriteLine($"{input_type}");
@@ -200,11 +204,14 @@ namespace mission1
                      Console.WriteLine($"{analog[i]}");
              }          
              Console.WriteLine($"{ Display_type }");
+             Console.WriteLine($"Horizontal screen size : {M_H_imagesize}");
+             Console.WriteLine($"Vertical screen size : {M_V_imagesize}");
+             Console.WriteLine($"Gamma : {gamma}");
              Console.WriteLine($"{DPMS}");
              Console.WriteLine($"Standard sRGB colour space : {Display_parameters[0]}");
              Console.WriteLine($"Preferred timing mode specified in descriptor block 1  : {Display_parameters[1]}");
-             Console.WriteLine($"Continuous timings with GTF or CVT : {Display_parameters[2]}");
-            */
+             Console.WriteLine($"Continuous timings with GTF or CVT : {Display_parameters[2]}\n");
+            
             ///////////////////////////////////
             ///
         }
@@ -232,16 +239,16 @@ namespace mission1
             }
 
             //////////////////////
-            /*
-            Console.WriteLine($"{Red_xy[0]}");
-            Console.WriteLine($"{Red_xy[1]}");
-            Console.WriteLine($"{Green_xy[0]}");
-            Console.WriteLine($"{Green_xy[1]}");
-            Console.WriteLine($"{Blue_xy[0]}");
-            Console.WriteLine($"{Blue_xy[1]}");
-            Console.WriteLine($"{White_xy[0]}");
-            Console.WriteLine($"{White_xy[1]}");
-            */
+            
+            Console.WriteLine($"Red x : {Red_xy[0]}");
+            Console.WriteLine($"Red y : {Red_xy[1]}");
+            Console.WriteLine($"Green x : {Green_xy[0]}");
+            Console.WriteLine($"Green y : {Green_xy[1]}");
+            Console.WriteLine($"Blue x : {Blue_xy[0]}");
+            Console.WriteLine($"Blue y : {Blue_xy[1]}");
+            Console.WriteLine($"White x : {White_xy[0]}");
+            Console.WriteLine($"White y : {White_xy[1]}\n");
+            
             //////////////////////
         }
 
@@ -255,28 +262,30 @@ namespace mission1
             { 
                 if (sumstring.Substring((sumstring.Length - 1) - i, 1) == "1")
                 {
-                    if (i == 0) timing_bitamp = "1152x870 ";
-                    else if (i == 1) timing_bitamp = "1280x1024 ";
-                    else if (i <= 5) timing_bitamp = "1024x768 ";
-                    else if (i == 6) timing_bitamp = "832x624 ";
-                    else if (i <= 10) timing_bitamp = "800x600 ";
-                    else if (i <= 14) timing_bitamp = "640x480 ";
-                    else if (i <= 16) timing_bitamp = "720x400 ";
+                    if (i == 0) timing_bitamp += "1152x870 ";
+                    else if (i == 1) timing_bitamp += "1280x1024 ";
+                    else if (i <= 5) timing_bitamp += "1024x768 ";
+                    else if (i == 6) timing_bitamp += "832x624 ";
+                    else if (i <= 10) timing_bitamp += "800x600 ";
+                    else if (i <= 14) timing_bitamp += "640x480 ";
+                    else if (i <= 16) timing_bitamp += "720x400 ";
 
-                    if ((i == 4) || (i == 9) || (i == 14)) timing_bitamp = timing_bitamp + "@ 60Hz";
-                    else if ((i == 0) || (i == 1) || (i == 2) || (i == 6) || (i == 7) || (i == 11)) timing_bitamp = timing_bitamp + "@ 75Hz";
-                    else if ((i == 3) || (i == 16)) timing_bitamp = timing_bitamp + "@ 70Hz";
-                    else if (i == 5) timing_bitamp = timing_bitamp + "@ 87Hz";
-                    else if ((i == 8) || (i == 12)) timing_bitamp = timing_bitamp + "@ 72Hz";
-                    else if (i == 13) timing_bitamp = timing_bitamp + "@ 67Hz";
-                    else if (i == 15) timing_bitamp = timing_bitamp + "@ 88Hz";
+                    if ((i == 4) || (i == 9) || (i == 14)) timing_bitamp = timing_bitamp + "@ 60Hz\n";
+                    else if ((i == 0) || (i == 1) || (i == 2) || (i == 6) || (i == 7) || (i == 11)) timing_bitamp = timing_bitamp + "@ 75Hz\n";
+                    else if ((i == 3) || (i == 16)) timing_bitamp = timing_bitamp + "@ 70Hz\n";
+                    else if (i == 5) timing_bitamp = timing_bitamp + "@ 87Hz\n";
+                    else if ((i == 8) || (i == 12)) timing_bitamp = timing_bitamp + "@ 72Hz\n";
+                    else if (i == 13) timing_bitamp = timing_bitamp + "@ 67Hz\n";
+                    else if (i == 15) timing_bitamp = timing_bitamp + "@ 88Hz\n";
                 }
 
             }
+            if (timing_bitamp == "")
+                timing_bitamp = "none timing_bitmap";
             ////////////////////////////
-            /*
-            Console.WriteLine($"{timing_bitamp}");
-            */
+            
+            Console.WriteLine($"{timing_bitamp}\n");
+            
             ////////////////////////////
         }
 
@@ -308,11 +317,11 @@ namespace mission1
                     }
                     Vertical_frequency[i] = Convert.ToInt32(imformation2[78 + (i * 4)].Substring(2, 2), 2) * 16 + 
                         imformation10[79 + (i * 4)] + 60;
-                    /*
-                    Console.WriteLine($"{X_resoloution[i]}");
-                    Console.WriteLine($"{Vertical_frequency[i]}");
-                    Console.WriteLine($"{modes[i]}");
-                    */
+                    
+                    Console.WriteLine($"X_resoloution : {X_resoloution[i]}");
+                    Console.WriteLine($"Vertical_frequency : {Vertical_frequency[i]}");
+                    Console.WriteLine($"modes : {modes[i]}\n");
+                    
                 }
             }
 
@@ -335,7 +344,11 @@ namespace mission1
             int Horizontal_Border = 0;
             int Vertical_Border = 0;
             string interlace = "";
-
+            string stereo = "";
+            string  sync_flag = "";
+            string[] Analog_sync = new string[3];               //0 : Sync type 1 : Serration 2 : Sync on red and blue lines additionally to green
+            string[] Digital_sync = new string[2];              /*composite mode(0 : Serration 1 : Horizontal sync polarity) 
+                                                                  separate mode (0 : Vertical sync polarity 1 : Horizontal sync polarity)*/
 
             Pixel_clock = ( (float)( Convert.ToInt32(imformation2[110] + imformation2[111] + imformation2[108] + imformation2[109], 2) * 10000) 
                 / 1000000 ).ToString() + "MHz" ;
@@ -365,12 +378,71 @@ namespace mission1
             else
                 interlace = "non-inerlaced";
 
+            if (Convert.ToInt32(imformation2[142].Substring(1, 2), 2) == 0)
+                stereo = "X";
+            else if (Convert.ToInt32(imformation2[142].Substring(1, 2), 2) == 1)
+            {
+                if (imformation10[143] % 2 == 1)
+                    stereo = "field sequential, right during stereo sync";
+                else
+                    stereo = "2-way interleaved, right image on even lines";
+            }
+            else if (Convert.ToInt32(imformation2[142].Substring(1, 2), 2) == 2)
+            {
+                if (imformation10[143] % 2 == 1)
+                    stereo = "field sequential, left during stereo sync";
+                else
+                    stereo = "2-way interleaved, left image on even lines";
+            }
+            else if (Convert.ToInt32(imformation2[142].Substring(1, 2), 2) == 3)
+            {
+                if (imformation10[143] % 2 == 1)
+                    stereo = "4-way interleaved";
+                else
+                    stereo = "side-by-side interleaved";
+            }
 
+            if(imformation10[142]%2 == 0)
+            {
+                sync_flag = "analog";
+                if (imformation2[143].Substring(1, 0) == "1")
+                    Analog_sync[0] = "Sync type : bipolar analog composite.";
+                else
+                    Analog_sync[0] = "Sync type : analog composite.";
+                if(imformation2[143].Substring(2, 0) == "1")
+                    Analog_sync[1] = "Serration : with serrations (H-sync during V-sync).";
+                else
+                    Analog_sync[1] = "Serration : without serrations.";
+                if(imformation2[143].Substring(2, 0) == "1")
+                    Analog_sync[2] = "Sync on red and blue lines additionally to green : sync on all three (RGB) video signals.";
+                else
+                    Analog_sync[2] = "Sync on red and blue lines additionally to green : sync on green signal only.";
+            }
+            else 
+            {
+                sync_flag = "digital";
+                if (imformation10[143] >= 8)
+                {
+                    if (imformation2[143].Substring(1, 1) == "1")
+                        Digital_sync[0] = "Vertical sync polarity : positive";
+                    else
+                        Digital_sync[0] = "Vertical sync polarity : negative";
+                }
+                else
+                {
+                    if (imformation2[143].Substring(1, 1) == "1")
+                        Digital_sync[0] = "Serration : without serration;";
+                    else
+                        Digital_sync[0] = "Serration : with serration (H-sync during V-sync)";
+                }
 
-            Console.WriteLine($"{Horizontal_Border}");
-            Console.WriteLine($"{Vertical_Border}");
+                if (imformation2[143].Substring(2, 1) == "1")
+                    Digital_sync[1] = "Horizontal sync polarity : positive";
+                else
+                    Digital_sync[1] = "Horizontal sync polarity : negative";
 
-            /*       
+            }
+                
             Console.WriteLine($"Pixel_clock : {Pixel_clock}");
             Console.WriteLine($"Horizontal_Active : {Horizontal_Active}");
             Console.WriteLine($"Horizontal_Blanking : {Horizontal_Blanking}");
@@ -382,19 +454,293 @@ namespace mission1
             Console.WriteLine($"Vertical_Sync_Pulse : {Vertical_Sync_Pulse}");
             Console.WriteLine($"Horizontal_Border : {Horizontal_Border}");
             Console.WriteLine($"Vertical_Border : {Vertical_Border}");
-            */
+            Console.WriteLine($"interface mode : {interlace}");
+            Console.WriteLine($"stereo mode : {stereo}");
+                        Console.WriteLine($"{sync_flag} syns");
+            if(sync_flag == "analog")
+                foreach( string i in Analog_sync )
+                    Console.WriteLine($"{i}");
+            if(sync_flag == "digital")
+                foreach(string i in Digital_sync)
+                    Console.WriteLine($"{i}");
+            Console.WriteLine("");
+            
+
         }
+
+
+        static void anotherDescription(string[] imformation2, int[] imformation10, char[] imformation16)
+        {
+            
+            string[ , ] Description = new string[5, 20];
+            for (int i = 0; i < 3; i++)
+            {
+                if (imformation16[150 + (i * Constants.m)] == 'F')
+                {
+                    if (imformation10[151 + (i * Constants.m)] >= 12 && imformation10[151 + (i * Constants.m)] != 13)
+                    {
+                        for (int j = 0; j <= 13; j++)
+                        {
+                            Description[i, 0] = Description[i, 0] + Convert.ToChar(imformation10[152 + (j * 2) + (i * Constants.m)] * 16 + imformation10[153 + (j * 2) + (i * Constants.m)]);
+                        }
+                        if (imformation16[151 + (i * Constants.m)] == 'F')
+                            Description[i, 0] = "Display serial number :" + Description[i, 0];
+                        else if (imformation16[151 + (i * Constants.m)] == 'E')
+                            Description[i, 0] = "Unspecified text :" + Description[i, 0];
+                        else if (imformation16[151 + (i * Constants.m)] == 'C')
+                            Description[i, 0] = "Display name :" + Description[i, 0];
+                    }
+                    else if (imformation16[151 + (i * Constants.m)] == 'D')                                             //////////////////////////////EDID_Display_Range_Limits start
+                    {
+                        Description[i, 0] = "EDID_Display_Range_Limits";
+                        if (imformation2[153 + (i * Constants.m)].Substring(0, 2) == "00")
+                            Description[i, 1] = "Horizontal rate offsets : none";
+                        else if (imformation2[153 + (i * Constants.m)].Substring(0, 2) == "10")
+                            Description[i, 1] = "Horizontal rate offsets : +255 kHz for max. rate";
+                        else if (imformation2[153 + (i * Constants.m)].Substring(0, 2) == "11")
+                            Description[i, 1] = "Horizontal rate offsets : +255 kHz for max and min. rate";
+
+                        Description[i, 2] = "Minimum vertical line rate : " + (imformation10[154 + (i * Constants.m)] * 16 + imformation10[155] + (i * Constants.m)).ToString() + "Hz";
+                        Description[i, 3] = "Maximum vertical line rate : " + (imformation10[156 + (i * Constants.m)] * 16 + imformation10[157 + (i * Constants.m)]).ToString() + "Hz";
+                        Description[i, 4] = "Minimum horizontal line rate : " + (imformation10[158 + (i * Constants.m)] * 16 + imformation10[159 + (i * Constants.m)]).ToString() + "Hz";
+                        Description[i, 5] = "Maximum horizontall line rate : " + (imformation10[160 + (i * Constants.m)] * 16 + imformation10[161 + (i * Constants.m)]).ToString() + "Hz";
+                        if (imformation16[165 + (i * 34)] == '4')
+                            Description[i, 6] = "Maximum pixel clock rate : " + ((float)((imformation10[162 + (i * Constants.m)] * 16 + imformation10[163 + (i * Constants.m)]) * 10) +
+                                                         (float)Convert.ToInt32(imformation2[168 + (i * Constants.m)] + imformation2[169 + (i * Constants.m)].Substring(0, 2), 2) * 0.25).ToString() + "MHz";
+
+                        if (imformation16[165 + (i * Constants.m)] == '0')
+                            Description[i, 7] = "Extended timing information type : Default GTF";
+                        else if (imformation16[165 + (i * Constants.m)] == '1')
+                            Description[i, 7] = "Extended timing information type : No timing information.";
+                        else if (imformation16[165 + (i * Constants.m)] == '2')                                 /////////////////////////With GTF secondary curve start
+                        {
+                            Description[i, 7] = "Extended timing information type : Secondary GTF supported, parameters as follows.";
+                            Description[i, 8] = "start frequency : " + ((imformation10[168 + (i * Constants.m)] * 10 + imformation10[169 + (i * Constants.m)]) * 2).ToString() + "KHz";
+                            Description[i, 9] = "GTF C value : " + ((float)(imformation10[170 + (i * Constants.m)] * 10 + imformation10[171 + (i * Constants.m)]) / 2).ToString();
+                            Description[i, 10] = "GTF M value : " + (Convert.ToInt32(imformation2[174 + (i * Constants.m)] + imformation2[175 + (i * Constants.m)] 
+                                + imformation2[172 + (i * Constants.m)] + imformation2[173 + (i * Constants.m)], 2)).ToString();
+                            Description[i, 11] = "GTF K value : " + (imformation10[174 + (i * Constants.m)] * 10 + imformation10[175 + (i * Constants.m)]).ToString();
+                            Description[i, 12] = "GTF J value : " + ((float)(imformation10[176 + (i * Constants.m)] * 10 + imformation10[177 + (i * Constants.m)]) / 2).ToString();
+                        }                                                                             //////////////////////////////////With GTF secondary curve end
+                        else if (imformation16[165 + (i * Constants.m)] == '4')                                ////////////////////With CVT support start
+                        {
+                            Description[i, 7] = "Extended timing information type : CVT.";
+                            Description[i, 8] = "CVT major version" + imformation10[166 + (i * Constants.m)].ToString();
+                            Description[i, 9] = "CVT minor version" + imformation10[167 + (i * Constants.m)].ToString();
+                            Description[i, 10] = "Maximum active pixels per line : " + Convert.ToInt32(imformation2[169 + (i * Constants.m)].Substring(2, 2) 
+                                + imformation2[170 + (i * Constants.m)] + imformation2[171 + (i * Constants.m)], 2).ToString();
+                            Description[i, 11] = "Aspect ratio bitmap : ";
+                            for (int k = 0; k < (imformation2[172 + (i * 34)] + imformation2[173 + (i * Constants.m)].Substring(0, 1)).Length; k++)
+                            {
+                                if (((imformation2[172 + (i * Constants.m)] + imformation2[173 + (i * Constants.m)].Substring(0, 1))).Substring(k, 1) == "1")
+                                {
+                                    switch (k)
+                                    {
+                                        case 0:
+                                            Description[i, 11] += "4:3\n";
+                                            break;
+                                        case 1:
+                                            Description[i, 11] += "16:9\n";
+                                            break;
+                                        case 2:
+                                            Description[i, 11] += "16:10\n";
+                                            break;
+                                        case 3:
+                                            Description[i, 11] += "5:4\n";
+                                            break;
+                                        case 4:
+                                            Description[i, 11] += "15:9\n";
+                                            break;
+                                    }
+                                }
+                            }
+                            Description[i, 12] = "Aspect ratio preference";
+                            switch ((Convert.ToInt32(imformation2[174 + (i * Constants.m)].Substring(0, 3), 2)))
+                            {
+                                case 0:
+                                    Description[i, 12] = "4:3";
+                                    break;
+                                case 1:
+                                    Description[i, 12] = "16:9";
+                                    break;
+                                case 2:
+                                    Description[i, 12] = "16:10";
+                                    break;
+                                case 3:
+                                    Description[i, 12] = "5:4";
+                                    break;
+                                case 4:
+                                    Description[i, 12] = "15:9";
+                                    break;
+                            }
+                            if (imformation10[174 + (i * Constants.m)] % 2 == 1)
+                                Description[i, 13] = "CVT-RB reduced blanking";
+                            else
+                                Description[i, 13] = "CVT-RB none reduced blanking";
+                            if (imformation10[175 + (i * Constants.m)] >= 8)
+                                Description[i, 14] = "CVT standard blanking";
+                            else
+                                Description[i, 14] = "CVT standard blanking = none";
+                            Description[i, 15] = "Horizontal shrink";
+                            Description[i, 16] = "Horizontal stretch";
+                            Description[i, 17] = "Vertical shrink";
+                            Description[i, 18] = "Vertical stretch";
+                            for (int k = 0; k < 4; k++)
+                            {
+                                if (imformation2[176 + (i * Constants.m)].Substring(k, 1) == "1")
+                                    Description[i, 15 + k] = "none" + Description[i, 15 + k];
+                            }
+                            Description[i, 20] = (imformation10[178 + (i * Constants.m)] * 16 + imformation10[179 + (i * Constants.m)]).ToString();
+
+                        }                                                                            /////////////////////////////With CVT support end
+                    }                                                                               ///////////////////////////////EDID_Display_Range_Limits end
+                    else if (imformation16[150 + (i * Constants.m)] == 'B')                                    ///////////////////////////////Additional white point descriptor start
+                    {
+                        Description[i, 0] = "Additional white point descriptor";
+                        Description[i, 1] = "white point index number : " + (imformation10[154 + (i * Constants.m)] * 16 + imformation10[155 + (i * Constants.m)]).ToString();
+                        Description[i, 2] = "White point x : " + (((float)Convert.ToInt32(imformation2[158 + (i * Constants.m)] +
+                            imformation2[159 + (i * Constants.m)] + imformation2[157 + (i * Constants.m)].Substring(0, 2), 2)) / 1024).ToString();
+                        Description[i, 3] = "White point y : " + (((float)Convert.ToInt32(imformation2[160 + (i * Constants.m)] +
+                            imformation2[161 + (i * Constants.m)] + imformation2[157 + (i * Constants.m)].Substring(2, 2), 2)) / 1024).ToString();
+                        Description[i, 4] = "gamma : " + ((float)(imformation10[162 + (i * Constants.m)] * 16 + imformation10[163 + (i * Constants.m)] + 100) / 100).ToString();
+                    }                                                                                 ///////////////////////////////Additional white point descriptor end
+                    else if (imformation16[150 + (i * Constants.m)] == '9')
+                    {
+                        Description[i, 0] = "Color management data descriptor";
+                        Description[i, 1] = "Version : 03";
+                        Description[i, 2] = "Red a3";
+                        Description[i, 3] = "Red a2";
+                        Description[i, 4] = "Green a3";
+                        Description[i, 5] = "Greeen a2";
+                        Description[i, 6] = "Blue a3";
+                        Description[i, 7] = "Blue a2";
+                        for(int m = 0; m < 8; m ++)
+                        {
+                            Description[i, 2 + m] += imformation16[156 + (m * 4) + (i * Constants.m)].ToString() + imformation16[157 + (m * 4) + (i * Constants.m)].ToString() 
+                                + imformation16[154 + (m * 4) + (i * Constants.m)].ToString() + imformation16[155 + (m * 4) + (i * Constants.m)].ToString();
+                        }
+
+
+                    }
+                    else if (imformation10[150 + (i * Constants.m)] == '8')                                   /////////////////////////////////EDID CVT 3-byte timing codes descriptor start
+                    {                      
+                            Description[i, 0] = "Color management data descriptor";
+                            Description[i, 1] = "Verson : 01";
+                        for (int l = 0; l < 4; l++)
+                        {
+                            Description[i, 2 + (l * 4)] = "Addressable lines" + Convert.ToInt32(imformation2[158 + (i * Constants.m)] + imformation2[156 + (i * Constants.m)] + imformation2[157 + (i * Constants.m)]).ToString();
+                            Description[i, 3 + (l * 4)] = "Aspect ratio : ";
+                            if (imformation10[159 + (i * Constants.m)] == 0) Description[i, 3 + (l * 4)] += "4 : 3";
+                            else if (imformation10[159 + (i * Constants.m)] == 4) Description[i, 3 + (l * 4)] += "16 : 9";
+                            else if (imformation10[159 + (i * Constants.m)] == 8) Description[i, 3 + (l * 4)] += "16 : 10";
+                            else if (imformation10[159 + (i * Constants.m)] == 12) Description[i, 3 + (l * 4)] += "15 : 9";
+                            Description[i, 4 + (l * 4)] = "Preferred vertical rate";
+                            if (imformation2[160 + (i * Constants.m)].Substring(1, 2) == "00") Description[i, 4 + (l * 4)] += "50Hz";
+                            else if (imformation2[160 + (i * Constants.m)].Substring(1, 2) == "01") Description[i, 4 + (l * 4)] += "60Hz";
+                            else if (imformation2[160 + (i * Constants.m)].Substring(1, 2) == "10") Description[i, 4 + (l * 4)] += "75Hz";
+                            else if (imformation2[160 + (i * Constants.m)].Substring(1, 2) == "00") Description[i, 4 + (l * 4)] += "85Hz";
+                            Description[i, 5 + (l * 4)] = "Vertical rate bitmap";
+                            for (int k = 0; k < (imformation2[160 + (i * Constants.m)].Substring(3, 1) + imformation2[161 + (i * Constants.m)]).Length; k++)
+                            {
+                                if ((imformation2[160 + (i * Constants.m)].Substring(3, 1) + imformation2[161 + (i * Constants.m)]).Substring(k, 1) == "1")
+                                {
+                                    switch (k)
+                                    {
+                                        case 0:
+                                            Description[i, 5 + (l * 4)] += "50Hz\n";
+                                            break;
+                                        case 1:
+                                            Description[i, 5 + (l * 4)] += "60Hz\n";
+                                            break;
+                                        case 2:
+                                            Description[i, 5 + (l * 4)] += "75Hz\n";
+                                            break;
+                                        case 3:
+                                            Description[i, 5 + (l * 4)] += "85Hz\n";
+                                            break;
+                                        case 4:
+                                            Description[i, 5 + (l * 4)] += "60Hz reduced blanking\n";
+                                            break;
+                                    }
+                                }
+                            }
+                        }
+
+
+                    }                                                                                          //////////////////////////////EDID CVT 3-byte timing codes descriptor end
+                    else if (imformation10[150 + (i * Constants.m)] == '7')
+                    {
+                        string sumstring2 = "";
+                        Description[i, 0] = "Additional standard timings";
+                        Description[i, 1] = "version : 10";
+                        for(int k = 0; k < 12; k++)
+                            sumstring2 += imformation2[156 + (i * Constants.m) +k];
+
+                        for (int n = 0; n < sumstring2.Length; n++)
+                        {
+                            if (sumstring2.Substring(n, 1) == "1")
+                            {
+                                if (n == 0) Description[i, 2] = "1152 X 864";
+                                else if (n == 1) Description[i, 2] = "1024 X 768";
+                                else if (n == 2) Description[i, 2] = "800 X 600";
+                                else if (n == 3) Description[i, 2] = "848 X 480";
+                                else if (n == 4) Description[i, 2] = "640 X 480";
+                                else if (n == 5) Description[i, 2] = "720 X 400";
+                                else if (n == 6) Description[i, 2] = "640 X 400";
+                                else if (n == 7) Description[i, 2] = "640 X 350";
+                                else if (n <= 11) Description[i, 2] = "1280 X 768";
+                                else if (n <= 13) Description[i, 2] = "1280 X 960";
+                                else if (n <= 15) Description[i, 2] = "1280 X 1024";
+                                else if (n == 16) Description[i, 2] = "1360 X 768";
+                                else if (n == 17) Description[i, 2] = "1280 X 768";
+                                else if (n <= 20) Description[i, 2] = "1440 X 900";
+                                else if (n <= 24) Description[i, 2] = "1440 X 1050";
+                                else if (n <= 28) Description[i, 2] = "1680 X 1050";
+                                else if (n <= 33) Description[i, 2] = "1680 X 1200";
+                                else if (n <= 35) Description[i, 2] = "1792 X 1344";
+                                else if (n <= 37) Description[i, 2] = "1856 X 1392";
+                                else if (n <= 41) Description[i, 2] = "1920 X 1200";
+                                else if (n <= 43) Description[i, 2] = "1920 X 1440";
+
+                                if (n <= 7 || n != 4 || n == 11 || n == 13 || n == 15 || n == 20 || n == 24 || n == 28 || n == 33 || n == 42) Description[i, 2] += "85Hz";
+                                else if (n == 4 || n == (8) || n == 9  || n == 12 || n == 14 || n == (16) || n == 17 || n == (18) || 
+                                            n == (21) || n == 22 || n == (24) || n == 25 || n == (26) || n == (29) || n == 34 || n == 36 || n == (38) || n == 39 || n == 42) Description[i, 2] += "60Hz";
+                                else if (n == 30) Description[i, 2] += "65Hz";
+                                else Description[i, 2] += "75Hz";
+                                if(n == 8 || n == 16 || n == 18 || n ==21 || n== 24 || n == 26 || n == 29 || n == 38 ) Description[i, 2] += " (CVT - RB)";
+
+                            }
+                        }
+                    }
+                }
+                else
+                    Console.WriteLine("Manufacturer reserved descriptors.");
+            }
+            for(int i =0; i < 3; i++ )
+            {
+                for (int j = 0; j < 20; j++)
+                    if(Description[i, j] != null)
+                        Console.WriteLine(Description[i, j]);
+                Console.WriteLine("\n");
+            }
+            Console.WriteLine("");
+            
+        }
+
+
 
         static void Main(string[] args)
         {
-            char[] arr16 = new char[500];    // EDID 16 진수 저장
-            int[] arr10 = new int[500];      // EDID 10 진수 저장
-            string[] arr2 = new string[500]; // EDID 2 진수 저장
+            char[] arr16 = new char[1000];    // EDID 16 진수 저장
+            int[] arr10 = new int[1000];      // EDID 10 진수 저장
+            string[] arr2 = new string[1000]; // EDID 2 진수 저장
+            string arr = "";
             using (StreamReader sr = new StreamReader(new FileStream(@args[0], FileMode.Open)))
             {
-                 arr16 = sr.ReadToEnd().Replace(" ", sr.ReadToEnd()).ToCharArray();
+                 arr = (sr.ReadToEnd().Replace(Environment.NewLine, sr.ReadToEnd())).ToUpper();
+                 arr16 = arr.Replace(" ", "").ToCharArray();
                 
-            }
+            }        
             for(int i = 0; i < arr16.Length ; i++)
             {
                 arr10[i] = (int)arr16[i];
@@ -410,8 +756,7 @@ namespace mission1
             Established_timing_bitmap(arr2, arr10, arr16);
             Standard_Display_Modes(arr2, arr10, arr16);
             Description1(arr2, arr10, arr16);
-            //Console.WriteLine($"{arr2[49]}");
-            //Console.WriteLine($"{arr10[35]}");
+            anotherDescription(arr2, arr10, arr16);
 
         }
     }
